@@ -1,4 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
+using System.Text.Json.Serialization.Metadata;
 
 namespace _1;
 
@@ -16,12 +17,16 @@ class Program
             { 'x', 0 }
         };
         string str = File.ReadLines("input").First();
-        for(int i = 0; i < str.Length; i += 2)
+        for(int i = 0; i < str.Length; i += 3)
         {
-            char c1 = str[i];
-            char c2 = str[i + 1];
-            amount += c1 == 'x' ? dict[c2] : c2 == 'x' ? dict[c1] : (dict[c1] + dict[c2] + 2);
+            string enemies = str[i..(i + 3)];
+            int enemyCount = 3 - enemies.Count(x => x == 'x');
+            int add = Math.Max(0, enemyCount - 1) * enemyCount + enemies.Sum(x => dict[x]);
+            amount += add;
+            Console.WriteLine($"{enemies} - {add}");
         }
         Console.WriteLine(amount);
     }
+
+
 }
